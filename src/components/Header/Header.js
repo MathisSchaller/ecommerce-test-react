@@ -4,7 +4,7 @@ import './Header.css';
 import ArticlesList from '../ArticlesListe/ArticlesListe';
 
 const header = (props) => {
-  const { cart, enleveHandler } = props;
+  const { cart, removeHandler } = props;
 
   let totalPrice = 0.0;
 
@@ -19,7 +19,7 @@ const header = (props) => {
       <div id='cart'>
         Votre panier : EUR {totalPrice}
         <div id='cart-list'>
-          <ArticlesList articles={cart} enleveHandler={enleveHandler} />
+          <ArticlesList articles={cart} removeHandler={removeHandler} />
         </div>
       </div>
     </div>

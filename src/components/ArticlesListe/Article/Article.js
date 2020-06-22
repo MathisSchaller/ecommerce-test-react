@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 class Article extends Component {
   render() {
-    const { titre, description, prix, clicAchat, clicEnleve } = this.props;
+    const { titre, description, prix, addClick, removeClick } = this.props;
     return (
       <div className='article'>
         <h3>{titre}</h3>
         <p>{description}</p>
-        {clicAchat ? <button onClick={clicAchat}>EUR {prix}</button> : null}
-        {clicEnleve ? (
-          <button style={{ backgroundColor: 'red' }} onClick={clicEnleve}>
+        {addClick ? <button onClick={addClick}>EUR {prix}</button> : null}
+        {removeClick ? (
+          <button style={{ backgroundColor: 'red' }} onClick={removeClick}>
             X
           </button>
         ) : null}

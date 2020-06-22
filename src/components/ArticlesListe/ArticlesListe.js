@@ -3,7 +3,7 @@ import Article from './Article/Article';
 
 class ArticlesListe extends Component {
   render() {
-    const { articles, achatHandler, enleveHandler } = this.props;
+    const { articles, addHandler, removeHandler } = this.props;
 
     return (
       <div id='articlesList'>
@@ -14,12 +14,10 @@ class ArticlesListe extends Component {
               titre={article.title}
               description={article.desc}
               prix={article.price}
-              clicEnleve={
-                enleveHandler ? () => enleveHandler(index) : undefined
+              removeClick={
+                removeHandler ? () => removeHandler(index) : undefined
               }
-              clicAchat={
-                achatHandler ? () => achatHandler(article.id) : undefined
-              }
+              addClick={addHandler ? () => addHandler(article.id) : undefined}
               /* équivalent pour non adepte es6 (2015)
               clicAchat={function () {
                 achatHandler(article.id);

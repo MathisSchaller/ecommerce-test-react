@@ -35,10 +35,10 @@ class App extends Component {
         price: 4.99,
       },
     ],
-    panier: [],
+    cart: [],
   };
 
-  achatHandler = (idArticle) => {
+  addToCart = (idArticle) => {
     const articles = this.state.articles;
 
     // Récuperation de l'index de l'article dans la liste selon sont ID
@@ -46,28 +46,31 @@ class App extends Component {
       return article.id === idArticle;
     });
 
+    console.log(articleIndex);
+
     // Copie de l'article
     const article = { ...articles[articleIndex] };
 
-    const panier = [...this.state.panier];
+    const cart = [...this.state.cart];
 
-    panier.push(article);
+    cart.push(article);
 
+    console.log(cart);
     this.setState({
-      panier: panier,
+      cart: cart,
     });
   };
 
-  deleteHandler = (articleIndex) => {
+  deleteArticle = (articleIndex) => {
     // Copie des articles en ligne
-    const list = [...this.state.articles];
+    const articles = [...this.state.articles];
 
     axios
-      .delete('/articles/' + list[articleIndex].id + '?delay=1')
+      .delete('/articles/' + articles[articleIndex].id + '?delay=1')
       .then((res) => {
         if (res.status >= 200 && res.status < 300) {
-          list.splice(articleIndex, 1);
-          this.setState({ articles: list });
+          articles.splice(articleIndex, 1);
+          this.setState({ articles: articles });
         } else {
           console.log('Erreur lors de la suppresion');
         }
@@ -77,20 +80,20 @@ class App extends Component {
       });
   };
 
-  removeHandler = (articleIndex) => {
+  removeFromCart = (articleIndex) => {
     // Copie du panier de l'utilisateur
-    const list = [...this.state.panier];
+    const cart = [...this.state.cart];
 
-    list.splice(articleIndex, 1);
+    cart.splice(articleIndex, 1);
 
-    this.setState({ panier: list });
+    this.setState({ cart: cart });
   };
 
   render() {
     return (
       <div className='App'>
         <header className='App-header'>
-          <Header cart={this.state.panier} enleveHandler={this.removeHandler} />
+          <Header cart={this.state.cart} removeHandler={this.removeFromCart} />
           <img src={logo} className='App-logo' alt='logo' />
           <h3>
             Liste des derniers articles
@@ -98,8 +101,8 @@ class App extends Component {
           </h3>
           <ArticlesListe
             articles={this.state.articles}
-            achatHandler={this.achatHandler}
-            enleveHandler={this.deleteHandler}
+            addHandler={this.addToCart}
+            removeHandler={this.deleteArticle}
           />
         </header>
       </div>
@@ -121,10 +124,10 @@ class App extends Component {
           };
         });
 
-        const globalArticles = [...this.state.articles, ...updatedArticles];
+        const allArticles = [...this.state.articles, ...updatedArticles];
 
         this.setState({
-          articles: globalArticles,
+          articles: allArticles,
         });
       })
       .catch((err) => {
