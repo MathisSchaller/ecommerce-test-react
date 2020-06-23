@@ -55,12 +55,14 @@ class App extends Component {
   addToCart = (idArticle) => {
     const articles = this.state.articles;
 
+    console.log(idArticle);
+
     // Récuperation de l'index de l'article dans la liste selon sont ID
     const articleIndex = articles.findIndex((article) => {
       return article.id === idArticle;
     });
 
-    console.log(articleIndex);
+    if (articleIndex < 0) return articleIndex;
 
     // Copie de l'article
     const article = { ...articles[articleIndex] };
@@ -132,7 +134,13 @@ class App extends Component {
                   </div>
                 )}
               />
-              <Route exact path='/article/:id' component={FullArticle} />
+              <Route
+                exact
+                path='/article/:id'
+                render={(props) => (
+                  <FullArticle {...props} addHandler={this.addToCart} />
+                )}
+              />
               <Route exact path='/404' component={Page404} />
               <Redirect exact from='/article' to='/vente' />
               <Redirect exact from='/articles' to='/vente' />

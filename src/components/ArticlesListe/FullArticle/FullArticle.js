@@ -7,31 +7,27 @@ const FullArticle = (props) => {
   const [desc, setDesc] = useState(null);
   const [price, setPrice] = useState(NaN);
 
-  const addToCartHandler = () => {
-    console.log('added to your cart');
-  };
-
-  const [addToCart, setAddToCart] = useState(() => addToCartHandler);
-
   useEffect(() => {
-    axios
+    const src = axios
       .get('/article/' + props.match.params.id + '?delay=2')
       .then((res) => {
-        console.log(res.status);
+        // console.log(res.status);
         const article = res.data;
-        console.log(article);
+        // console.log(article);
 
         setTitle(article.name);
         setDesc(article.color);
         setPrice(article.year / 100);
       })
       .catch((err) => {
-        console.log('failed');
+        // console.log('failed');
         props.history.push({ pathname: '/404' });
       });
 
     return function cleanup() {
-      console.log('useEffect cleanup function');
+      // console.log('useEffect cleanup function');
+      // console.log(axios);
+      // console.log(src);
     };
   });
 
@@ -49,8 +45,9 @@ const FullArticle = (props) => {
               border: '2px solid lightgreen',
               borderRadius: '5px',
               padding: '8px',
+              marginBottom: '2em',
             }}
-            onClick={addToCart}>
+            onClick={() => props.addHandler(+props.match.params.id)}>
             Ajouter au panier
           </div>
         </div>
