@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Article extends Component {
   render() {
-    const { titre, description, prix, addClick, removeClick } = this.props;
+    const { id, titre, description, prix, addClick, removeClick } = this.props;
     return (
-      <div className='article'>
+      <Link
+        className='article'
+        to={{ pathname: '/article/' + id, search: titre }}>
         <h3>{titre}</h3>
         <p>{description}</p>
         {addClick ? <button onClick={addClick}>EUR {prix}</button> : null}
@@ -14,7 +17,7 @@ class Article extends Component {
           </button>
         ) : null}
         <hr style={{ marginBottom: 0 }} />
-      </div>
+      </Link>
     );
   }
 }

@@ -11,6 +11,7 @@ class ArticlesListe extends Component {
           return (
             <Article
               key={index}
+              id={article.id}
               titre={article.title}
               description={article.desc}
               prix={article.price}

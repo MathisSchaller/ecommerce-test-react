@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
-import logo from '../assets/logo.svg';
 import './App.css';
 import axios from 'axios';
 
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import LazyLoader from '../LazyLoader/LazyLoader';
+
 import Header from '../components/Header/Header';
-import ArticlesListe from '../components/ArticlesListe/ArticlesListe';
+
+// import ArticlesListe from '../components/ArticlesListe/ArticlesListe';
+// import FullArticle from '../components/ArticlesListe/FullArticle/FullArticle';
+
+// Lazy loading des 2 import ci-dessus
+const ArticlesListe = LazyLoader(() =>
+  import('../components/ArticlesListe/ArticlesListe')
+);
+const FullArticle = LazyLoader(() =>
+  import('../components/ArticlesListe/FullArticle/FullArticle')
+);
+
+const Page404 = () => <h1>404: Page introuvable, réessayez plus tard :)</h1>;
 
 class App extends Component {
   state = {
@@ -93,17 +107,38 @@ class App extends Component {
     return (
       <div className='App'>
         <header className='App-header'>
-          <Header cart={this.state.cart} removeHandler={this.removeFromCart} />
-          <img src={logo} className='App-logo' alt='logo' />
-          <h3>
-            Liste des derniers articles
-            <hr />
-          </h3>
-          <ArticlesListe
-            articles={this.state.articles}
-            addHandler={this.addToCart}
-            removeHandler={this.deleteArticle}
-          />
+          <BrowserRouter>
+            <Header
+              cart={this.state.cart}
+              removeHandler={this.removeFromCart}
+            />
+
+            <Switch>
+              <Route exact path='/' />
+              <Route
+                exact
+                path='/vente'
+                render={() => (
+                  <div>
+                    <h3>
+                      Liste des derniers articles
+                      <hr />
+                    </h3>
+                    <ArticlesListe
+                      articles={this.state.articles}
+                      addHandler={this.addToCart}
+                      removeHandler={this.deleteArticle}
+                    />
+                  </div>
+                )}
+              />
+              <Route exact path='/article/:id' component={FullArticle} />
+              <Route exact path='/404' component={Page404} />
+              <Redirect exact from='/article' to='/vente' />
+              <Redirect exact from='/articles' to='/vente' />
+              <Redirect to='/404' />
+            </Switch>
+          </BrowserRouter>
         </header>
       </div>
     );
