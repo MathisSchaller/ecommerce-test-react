@@ -1,35 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Article from './Article/Article';
 
-class ArticlesListe extends Component {
-  render() {
-    const { articles, addHandler, removeHandler } = this.props;
-
-    return (
-      <div id='articlesList'>
-        {articles.map((article, index) => {
-          return (
-            <Article
-              key={index}
-              id={article.id}
-              titre={article.title}
-              description={article.desc}
-              prix={article.price}
-              removeClick={
-                removeHandler ? () => removeHandler(index) : undefined
-              }
-              addClick={addHandler ? () => addHandler(article.id) : undefined}
-              /* équivalent pour non adepte es6 (2015)
-              clicAchat={function () {
-                achatHandler(article.id);
-              }}
-              */
-            />
-          );
-        })}
-      </div>
-    );
-  }
-}
+const ArticlesListe = ({
+  articles,
+  addHandler,
+  removeHandler,
+}) => (
+  <div id='articlesList'>
+    {articles
+      ? articles.map((article) => (
+          <Article
+            key={article.id}
+            article={article}
+            removeClick={
+              removeHandler
+                ? () => removeHandler(article.id)
+                : undefined
+            }
+            addClick={
+              addHandler ? () => addHandler(article) : undefined
+            }
+          />
+        ))
+      : null}
+  </div>
+);
 
 export default ArticlesListe;

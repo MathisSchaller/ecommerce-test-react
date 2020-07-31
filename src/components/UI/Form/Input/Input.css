@@ -1,0 +1,75 @@
+.Input {
+  width: 100%;
+  padding: 2em;
+  box-sizing: border-box;
+}
+
+.Label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 2em;
+}
+
+.InputElement {
+  outline: none;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font: inherit;
+  padding: 0;
+  box-sizing: border-box;
+  width: 80%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* With form's pseudo-element (right all the time) 
+.InputElement:valid {
+  border: 2px solid lightgreen;
+}
+.InputElement:invalid {
+  border: 2px solid #f77;
+}
+*/
+
+/* With generated class in the component (right if well coded) */
+/* Mostly used to interact with other elements than the input */
+/*
+.InputElement.Valid {
+  background-color: #9f9;
+}*/
+.InputElement.Invalid {
+  border: 2px solid #f77;
+  background-color: #fdd;
+}
+.Info {
+  display: inline-block;
+  padding: 2px;
+  width: 1em;
+  font-weight: bold;
+  vertical-align: top;
+  visibility: hidden;
+}
+/* 
+.Info.Valid,
+.InputElement:valid + .Info {
+  visibility: hidden;
+} 
+*/
+.Info.Invalid {
+  visibility: visible;
+  color: red;
+}
+.Info:hover {
+  cursor: pointer;
+}
+.Info:hover + .PopupMessage {
+  visibility: visible;
+}
+
+.PopupMessage {
+  display: block;
+  visibility: hidden;
+}

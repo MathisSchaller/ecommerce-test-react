@@ -1,56 +1,107 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import './Header.css';
-
-import logo from '../../assets/logo.svg';
 import ArticlesList from '../ArticlesListe/ArticlesListe';
 
-import { NavLink } from 'react-router-dom';
-const header = (props) => {
-  const { cart, removeHandler } = props;
+import { connect } from 'react-redux';
+import { removeCart, loadCart } from '../../store/cart/actions';
+
+const Header = ({ isAuth, cart, removeCart, loadCart }) => {
+  const payButtonink = isAuth ? '/panier' : '/auth';
 
   let totalPrice = 0.0;
 
+  if (!cart) cart = [];
+
   if (cart.length > 0) {
-    totalPrice = cart.reduce((total, article) => total + article.price, 0);
+    totalPrice = cart.reduce((total, article) => {
+      return total + article.price;
+    }, 0);
     totalPrice = Math.round(totalPrice * 100) / 100;
   }
+
+  useEffect(() => {
+    loadCart();
+  }, [loadCart]);
 
   return (
     <div id='header'>
       <h1>Site de vente en ligne</h1>
       <ul>
         <li>
-          <NavLink
-            exact
-            to='/'
-            activeStyle={{
-              color: 'red',
-              fontWeight: 'bold',
-            }}>
+          <NavLink exact to='/'>
             Accueil
           </NavLink>
         </li>
         <li>
-          <NavLink
-            exact
-            to='/vente'
-            activeStyle={{
-              color: 'red',
-              fontWeight: 'bold',
-            }}>
+          <NavLink exact to='/vente'>
             Tous les articles
           </NavLink>
         </li>
+        {isAuth ? (
+          <>
+            <li>
+              <NavLink exact to='/commandes'>
+                Mes commandes
+              </NavLink>
+            </li>
+            <li>
+              <NavLink exact to='/article/nouveau'>
+                Ajouter un article
+              </NavLink>
+            </li>
+            <li>
+              <NavLink exact to='/account'>
+                Mon compte
+              </NavLink>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <NavLink exact to='/auth'>
+                Connexion
+              </NavLink>
+            </li>
+            <li>
+              <NavLink exact to='/signup'>
+                Créer un compte
+              </NavLink>
+            </li>
+          </>
+        )}
       </ul>
       <div id='cart'>
-        Votre panier : EUR {totalPrice}
+        Votre panier:
+        <Link to={payButtonink}>
+          <button>EUR {totalPrice}</button>
+        </Link>
         <div id='cart-list'>
-          <ArticlesList articles={cart} removeHandler={removeHandler} />
+          {!cart || cart.length <= 0 ? (
+            <p>Votre panier est vide.</p>
+          ) : (
+            <ArticlesList
+              articles={cart}
+              removeHandler={removeCart}
+            />
+          )}
         </div>
       </div>
-      <img src={logo} className='App-logo' alt='logo' />
     </div>
   );
 };
 
-export default header;
+const mapDispatchToProps = (dispatch) => ({
+  removeCart: (id) => dispatch(removeCart(id)),
+  loadCart: () => dispatch(loadCart()),
+});
+
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  isAuth: state.auth.isAuth,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

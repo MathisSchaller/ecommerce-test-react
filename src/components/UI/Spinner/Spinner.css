@@ -1,0 +1,5 @@
+.Spinner img {
+  height: 2em;
+  animation: App-logo-spin infinite 1500ms linear;
+  vertical-align: middle;
+}

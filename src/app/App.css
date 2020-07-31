@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  border: 0;
 }
 
 .App-logo {
@@ -19,7 +20,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -39,7 +39,7 @@
 
 button {
   padding: 16px;
-  background-color: #61dafb;
+  background-color: #4483e0;
   color: white;
   font-weight: bold;
 }

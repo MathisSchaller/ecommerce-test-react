@@ -1,25 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-class Article extends Component {
-  render() {
-    const { id, titre, description, prix, addClick, removeClick } = this.props;
-    return (
-      <div className='article'>
-        <Link to={{ pathname: '/article/' + id, search: titre }}>
-          <h3>{titre}</h3>
-          <p>{description}</p>
-        </Link>
-        {addClick ? <button onClick={addClick}>EUR {prix}</button> : null}
-        {removeClick ? (
-          <button style={{ backgroundColor: 'red' }} onClick={removeClick}>
-            X
-          </button>
-        ) : null}
-        <hr style={{ marginBottom: 0 }} />
-      </div>
-    );
-  }
-}
+const Article = ({ article, addClick, removeClick, userId }) => (
+  <div className='article'>
+    <Link
+      to={{
+        pathname: '/article/' + article.id,
+        search: article.title,
+      }}>
+      <h3>{article.title}</h3>
+      <p>{article.desc}</p>
+    </Link>
+    {addClick ? (
+      <button onClick={addClick}>EUR {article.price}</button>
+    ) : (
+      <p>EUR {article.price}</p>
+    )}
+    {removeClick && article.userId === userId ? (
+      <button
+        style={{ backgroundColor: 'red' }}
+        onClick={removeClick}>
+        X
+      </button>
+    ) : null}
+    <hr style={{ marginBottom: 0 }} />
+  </div>
+);
 
-export default Article;
+const mapStateToProps = (state) => ({
+  userId: state.auth.user.userId,
+});
+
+export default connect(mapStateToProps)(Article);
